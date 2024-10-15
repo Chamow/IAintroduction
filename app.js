@@ -1,6 +1,6 @@
 const subscriptionKey = 'YOUR_AZURE_SUBSCRIPTION_KEY';
 const endpoint = 'YOUR_AZURE_ENDPOINT_URL';
-const analyzeUrl = `${endpoint}/vision/v3.2/analyze?visualFeatures=Categories,Description,Color`;
+const analyzeUrl = endpoint;
 
 document.getElementById('uploadBtn').onclick = function() {
     const fileInput = document.getElementById('imageInput');

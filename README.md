@@ -47,57 +47,50 @@ To create a model in Azure for recognizing objects, follow these steps:
 
 ### Step 1: Create an Azure Account
 
-1. Go to the [Azure Portal](https://portal.azure.com/).
-2. If you don't have an account, sign up for a free account.
+1. Open lab 2 and go to the [Azure Portal](https://portal.azure.com/).
 
 ### Step 2: Create a Computer Vision Resource
 
 1. In the Azure Portal, select **Create a resource**.
-2. Search for **Computer Vision** and select it.
+2. Search for **Azure AI services** and select it.
 3. Click **Create**.
 4. Fill in the required fields:
    - **Subscription**: Choose your subscription.
-   - **Resource group**: Create a new resource group or use an existing one.
+   - **Resource group**: Choose Group1.
    - **Region**: Select the region where you want your resource to be created.
    - **Name**: Enter a unique name for your Computer Vision resource.
+   - **Pricing tier**: Standard S0.
+   - By checking this box I acknowledge that I have read and understood all the terms below: Selected.
 5. Click **Review + create** and then click **Create**.
 
-### Step 3: Obtain Subscription Key and Endpoint
+### Step 3 : Connect your Azure AI service resource to Vision Studio
 
-1. After the resource is created, go to the resource page.
-2. In the left sidebar, select **Keys and Endpoint**.
-3. Note down the **Key1** and **Endpoint URL**. You will need these for your application.
+Next, connect the Azure AI service resource you provisioned above to Vision Studio.
 
-### Step 4: Train the Object Recognition Model
+1. In another browser tab, navigate to Vision Studio https://portal.vision.cognitive.azure.com?azure-portal=true.
+2. Sign in with your account and making sure you are using the same directory as the one where you have created your Azure AI services resource.
+3. On the Vision Studio home page, select View all resources under the Getting started with Vision heading. The View all resource link is highlighted under Getting started with Vision in Vision Studio.
+4. On the Select a resource to work with page, hover your mouse cursor over the resource you created above in the list and then check the box to the left of the resource name, then select Select as default resource.
+    - Note : If your resource is not listed, you may need to Refresh the page.
+5. The Select a resource to work with dialog is displayed with the cog-ms-learn-vision-SUFFIX Cognitive Services resource highlighted and checked. The Select as default resource button is highlighted.
+6. Close the settings page by selecting the "x" at the top right of the screen.
 
-1. In the Azure Portal, navigate to **Cognitive Services** and select **Custom Vision**.
-2. Click **Create a new project**.
-3. Fill in the project details:
-   - **Project Name**: Enter a name for your project.
-   - **Description**: Provide a description (optional).
-   - **Resource**: Select your Computer Vision resource.
-   - **Domain**: Choose a domain based on your application (e.g., General, Retail).
-4. Click **Create**.
+### Step 4 : Generate captions for an image
 
-### Step 5: Upload Images and Train the Model
+1. In a web browser, navigate to Vision Studio https://portal.vision.cognitive.azure.com?azure-portal=true.
+2. On the Getting started with Vision landing page, select the Image analysis tab and then select the Add captions to images tile.
 
-1. In your Custom Vision project, go to the **Training Images** tab.
-2. Click **Add Images** to upload images of the objects you want to recognize.
-3. After uploading, label your images (tag them) appropriately.
-4. Once you have uploaded and tagged your images, click on **Train** to train your model.
-5. After training, the model will be available for prediction.
+### Step 5 : Obtain Subscription Key and Endpoint
 
-### Step 6: Get Prediction URL
-
-1. After training, click on the **Performance** tab in your Custom Vision project.
-2. Click **Publish** to deploy your model.
-3. Note the **Prediction URL** and the associated **Key** from the **Settings** tab, which will be used in your application.
+1. Select an image to add Captions.
+2. In ***Next Step***, select ***Try out SDK***.
+3. Note down the **Ressource Key** and **Vision Endpoint**. You will need these for your application.
 
 ## Usage
 
 1. **Enter Azure Credentials**
 
-   In the "Azure Credentials" section, input your Azure subscription key and endpoint URL. You can find these details in the Azure Portal after creating your Computer Vision resource.
+   In the "Azure Credentials" section, input your Azure subscription key and vision endpoint. 
 
 2. **Upload an Image**
 
