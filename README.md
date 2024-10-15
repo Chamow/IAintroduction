@@ -7,9 +7,11 @@ This project is a web application that uses Azure Cognitive Services to identify
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
+- [Creating an Azure Model for Object Recognition](#creating-an-azure-model-for-object-recognition)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
+- [Contact](#contact)
 
 ## Features
 
@@ -38,6 +40,58 @@ The application is hosted on GitHub Pages and can be accessed directly at the fo
 ### Prerequisites
 
 - An Azure account. You will need to create a Computer Vision resource to get your subscription key and endpoint.
+
+## Creating an Azure Model for Object Recognition
+
+To create a model in Azure for recognizing objects, follow these steps:
+
+### Step 1: Create an Azure Account
+
+1. Go to the [Azure Portal](https://portal.azure.com/).
+2. If you don't have an account, sign up for a free account.
+
+### Step 2: Create a Computer Vision Resource
+
+1. In the Azure Portal, select **Create a resource**.
+2. Search for **Computer Vision** and select it.
+3. Click **Create**.
+4. Fill in the required fields:
+   - **Subscription**: Choose your subscription.
+   - **Resource group**: Create a new resource group or use an existing one.
+   - **Region**: Select the region where you want your resource to be created.
+   - **Name**: Enter a unique name for your Computer Vision resource.
+5. Click **Review + create** and then click **Create**.
+
+### Step 3: Obtain Subscription Key and Endpoint
+
+1. After the resource is created, go to the resource page.
+2. In the left sidebar, select **Keys and Endpoint**.
+3. Note down the **Key1** and **Endpoint URL**. You will need these for your application.
+
+### Step 4: Train the Object Recognition Model
+
+1. In the Azure Portal, navigate to **Cognitive Services** and select **Custom Vision**.
+2. Click **Create a new project**.
+3. Fill in the project details:
+   - **Project Name**: Enter a name for your project.
+   - **Description**: Provide a description (optional).
+   - **Resource**: Select your Computer Vision resource.
+   - **Domain**: Choose a domain based on your application (e.g., General, Retail).
+4. Click **Create**.
+
+### Step 5: Upload Images and Train the Model
+
+1. In your Custom Vision project, go to the **Training Images** tab.
+2. Click **Add Images** to upload images of the objects you want to recognize.
+3. After uploading, label your images (tag them) appropriately.
+4. Once you have uploaded and tagged your images, click on **Train** to train your model.
+5. After training, the model will be available for prediction.
+
+### Step 6: Get Prediction URL
+
+1. After training, click on the **Performance** tab in your Custom Vision project.
+2. Click **Publish** to deploy your model.
+3. Note the **Prediction URL** and the associated **Key** from the **Settings** tab, which will be used in your application.
 
 ## Usage
 
