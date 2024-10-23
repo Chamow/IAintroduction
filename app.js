@@ -49,19 +49,26 @@ function analyzeImage(imageUrl) {
             'Content-Type': 'application/json',
             'Ocp-Apim-Subscription-Key': subscriptionKey,
         },
-        body: JSON.stringify({ url: imageUrl }) // Utilisez 'url' pour analyser l'image
+        body: JSON.stringify({ url: imageUrl }) // Envoie l'URL de l'image à l'API Azure
     })
     .then(response => {
+        // Vérifie si la réponse est correcte avant de la traiter
         if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        // Tente de convertir la réponse en JSON
         return response.json();
     })
     .then(data => {
+        // Affiche les résultats si la conversion JSON est réussie
+        console.log("Azure Response Data:", data);
         const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = JSON.stringify(data, null, 2);
+        resultDiv.innerHTML = JSON.stringify(data, null, 2); // Affiche les résultats de l'analyse
     })
     .catch(error => {
-        console.error('Error:', error);
+        // Gestion de toutes les erreurs (réseau, JSON invalide, etc.)
+        console.error('Error in analyzing the image:', error);
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerText = `Error: ${error.message}`;
     });
 }
