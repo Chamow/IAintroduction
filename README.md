@@ -11,7 +11,6 @@ This project is a web application that uses Azure Cognitive Services to identify
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
-- [Contact](#contact)
 
 ## Features
 
@@ -129,14 +128,3 @@ Contributions are welcome! To contribute to this project:
 4. Commit your changes (`git commit -m 'Add some feature'`).
 5. Push to the branch (`git push origin feature/YourFeature`).
 6. Open a pull request.
-
-## Instructions for Use
-
-1. **Create the `README.md` file**: Open your code editor or IDE, create a new file, and name it `README.md`.
-2. **Copy and Paste**: Copy the above content and paste it into your newly created `README.md` file.
-3. **Replace Placeholders**: 
-   - Change `YOUR_USERNAME` to your actual GitHub username.
-   - Update your contact information (name and email) in the "Contact" section.
-4. **Save the File**: Save the changes to ensure the README is updated.
-
-This `README.md` provides comprehensive information for users and contributors, including features, usage details, project structure, and contact information.
