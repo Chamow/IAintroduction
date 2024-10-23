@@ -41,23 +41,22 @@
                 // Utilise FileReader pour lire le fichier
                 const reader = new FileReader();
                 reader.onloadend = function() {
-                    const imgBase64 = reader.result.split(',')[1]; // Base64 string
-                    // Pour les tests, vous pouvez directement analyser l'image en base64
-                    analyzeImage(imgBase64);
+                    // Envoie le fichier image binaire pour analyse
+                    analyzeImage(file);
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Pour analyser l'image avec le format base64
-        function analyzeImage(base64Image) {
+        // Pour analyser l'image avec le format binaire
+        function analyzeImage(file) {
             fetch(analyzeUrl, {
                 method: 'POST',
                 headers: {
                     'Ocp-Apim-Subscription-Key': subscriptionKey,
-                    'Content-Type': 'application/octet-stream'
+                    'Content-Type': 'application/octet-stream' // Important: Type binaire
                 },
-                body: JSON.stringify({ data: base64Image }) // Envoie l'image en base64 à l'API Azure
+                body: file // Envoie le fichier binaire directement
             })
             .then(response => response.json()) 
             .then(data => {
@@ -112,4 +111,5 @@
 
 </body>
 </html>
+
 
