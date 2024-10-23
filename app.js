@@ -34,7 +34,7 @@ function analyzeImage(base64Image) {
         },
         body: JSON.stringify({ data: base64Image }) // Envoie l'image en base64 à l'API Azure
     })
-    .then(response => response.json()) {
+    .then(response => response.json()) 
             .then(data => {
         // Affiche les résultats si la conversion JSON est réussie
             console.log("Azure Response Data:", data);
