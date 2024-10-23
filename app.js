@@ -2,13 +2,22 @@ const subscriptionKey = 'YOUR_AZURE_SUBSCRIPTION_KEY'; // Remplacez par votre cl
 const endpoint = 'YOUR_AZURE_ENDPOINT_URL'; // Remplacez par votre URL d'endpoint Azure
 const analyzeUrl = `${endpoint}/vision/v3.2/analyze?visualFeatures=Categories,Description,Color`;
 
-document.getElementById('uploadBtn').onclick = function() {
-    const fileInput = document.getElementById('imageInput');
-    const file = fileInput.files[0];
-    if (!file) {
-        alert('Please select an image file.');
-        return;
+document.getElementById('imageInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Crée un URL local pour l'image
+        const imageUrl = URL.createObjectURL(file);
+
+        // Sélectionne l'élément image et met à jour le 'src'
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = imageUrl;
+        imagePreview.style.display = 'block';  // Affiche l'image
+
+        // Optionnel : Si tu veux également mettre à jour un champ avec l'URL
+        document.getElementById('result').innerText = `Image URL: ${imageUrl}`;
     }
+});
+
 
     const reader = new FileReader();
     reader.onloadend = function() {
