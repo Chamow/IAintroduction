@@ -1,5 +1,5 @@
-const subscriptionKey = 'YOUR_AZURE_SUBSCRIPTION_KEY'; // Remplacez par votre clé d'abonnement Azure
-const endpoint = 'YOUR_AZURE_ENDPOINT_URL'; // Remplacez par votre URL d'endpoint Azure
+const subscriptionKey = 'faaa3191cf324ba5baa6216bd6e09e01'; // Remplacez par votre clé d'abonnement Azure
+const endpoint = 'https://testprojetia.cognitiveservices.azure.com/'; // Remplacez par votre URL d'endpoint Azure
 const analyzeUrl = `${endpoint}/vision/v3.2/analyze?visualFeatures=Categories,Description,Color`;
 
 document.getElementById('imageInput').addEventListener('change', function(event) {
