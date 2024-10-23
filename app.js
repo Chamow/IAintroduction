@@ -13,31 +13,28 @@ document.getElementById('imageInput').addEventListener('change', function(event)
         imagePreview.src = imageUrl;
         imagePreview.style.display = 'block';  // Affiche l'image
 
-        // Optionnel : Si tu veux également mettre à jour un champ avec l'URL
-        document.getElementById('result').innerText = `Image URL: ${imageUrl}`;
+        // Utilise FileReader pour lire le fichier
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            const imgBase64 = reader.result.split(',')[1]; // Base64 string
+            // Si vous avez besoin de l'image sous forme de base64, utilisez-la ici
+            // Sinon, téléchargez l'image sur votre serveur ou utilisez un service d'hébergement d'images
+            uploadImage(file);
+        };
+        reader.readAsDataURL(file);
     }
 });
-
-
-    const reader = new FileReader();
-    reader.onloadend = function() {
-        const imgBase64 = reader.result.split(',')[1]; // Base64 string
-        // Vous devez envoyer le fichier à un serveur ou utiliser une URL accessible pour l'analyse
-        uploadImage(file);
-    };
-    reader.readAsDataURL(file);
-};
 
 function uploadImage(file) {
     const formData = new FormData();
     formData.append('file', file);
 
     // Assurez-vous d'avoir une API ou un endpoint où vous pouvez envoyer le fichier
-    // Pour l'exemple, nous allons simplement imprimer le fichier
+    // Ici nous allons simplement imprimer le fichier
     console.log('File uploaded:', file);
     
-    // Après avoir téléchargé l'image sur un serveur, récupérez l'URL et analysez l'image
-    // Ici nous appelons une fonction fictive pour illustrer
+    // Remplacez ceci par votre logique pour télécharger l'image et obtenir une URL
+    // Pour l'exemple, nous utilisons une URL fictive
     const imageUrl = 'https://example.com/your-uploaded-image.jpg'; // Remplacez par l'URL de l'image téléchargée
     analyzeImage(imageUrl);
 }
