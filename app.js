@@ -1,6 +1,6 @@
 const subscriptionKey = 'faaa3191cf324ba5baa6216bd6e09e01'; // Remplacez par votre clé d'abonnement Azure
 const endpoint = 'https://testprojetia.cognitiveservices.azure.com/'; // Remplacez par votre URL d'endpoint Azure
-const analyzeUrl = `${endpoint}/vision/v3.2/analyze?visualFeatures=Categories,Description,Color`;
+const analyzeUrl = `${endpoint}/vision/v3.2/detect`;
 
 document.getElementById('imageInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -29,25 +29,20 @@ function analyzeImage(base64Image) {
     fetch(analyzeUrl, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'Ocp-Apim-Subscription-Key': subscriptionKey,
+            'Content-Type': 'application/octet-stream'
         },
         body: JSON.stringify({ data: base64Image }) // Envoie l'image en base64 à l'API Azure
     })
-    .then(response => {
-        // Vérifie si la réponse est correcte avant de la traiter
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        // Tente de convertir la réponse en JSON
-        return response.json();
-    })
-    .then(data => {
+    .then(response => response.json()) {
+            .then(data => {
         // Affiche les résultats si la conversion JSON est réussie
-        console.log("Azure Response Data:", data);
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = JSON.stringify(data, null, 2); // Affiche les résultats de l'analyse
+            console.log("Azure Response Data:", data);
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = JSON.stringify(data, null, 2);
+            display_output(data);
     })
+                
     .catch(error => {
         // Gestion de toutes les erreurs (réseau, JSON invalide, etc.)
         console.error('Error in analyzing the image:', error);
