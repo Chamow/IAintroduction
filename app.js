@@ -39,41 +39,45 @@
                 imagePreview.src = imageUrl;
                 imagePreview.style.display = 'block';  // Affiche l'image
 
-                // Utilise FileReader pour lire le fichier
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    const imgBase64 = reader.result.split(',')[1]; // Base64 string
-                    // Pour les tests, vous pouvez directement analyser l'image en base64
-                    analyzeImage(imgBase64);
-                };
-                reader.readAsDataURL(file);
+                // Appelle la fonction pour analyser l'image avec le fichier binaire
+                analyzeImage(file);
             }
         });
 
-        // Pour analyser l'image avec le format base64
-        function analyzeImage(base64Image) {
-            fetch(analyzeUrl, {
-                method: 'POST',
-                headers: {
-                    'Ocp-Apim-Subscription-Key': subscriptionKey,
-                    'Content-Type': 'application/octet-stream'
-                },
-                body: JSON.stringify({ data: base64Image }) // Envoie l'image en base64 à l'API Azure
-            })
-            .then(response => response.json()) 
-            .then(data => {
-                // Affiche les résultats si la conversion JSON est réussie
-                console.log("Azure Response Data:", data);
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = JSON.stringify(data, null, 2);
-                display_output(data);  // Appelle la fonction display_output
-            })
-            .catch(error => {
-                // Gestion de toutes les erreurs (réseau, JSON invalide, etc.)
-                console.error('Error in analyzing the image:', error);
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerText = `Error: ${error.message}`;
-            });
+        // Fonction pour analyser l'image en envoyant le fichier directement
+        function analyzeImage(file) {
+            // Utilise FileReader pour lire le fichier en tant qu'ArrayBuffer (données binaires)
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const arrayBuffer = reader.result; // Le fichier binaire
+
+                // Envoie les données binaires à l'API Azure
+                fetch(analyzeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Ocp-Apim-Subscription-Key': subscriptionKey,
+                        'Content-Type': 'application/octet-stream' // Binaire, pas base64
+                    },
+                    body: arrayBuffer // Envoie les données binaires
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Affiche les résultats si la conversion JSON est réussie
+                    console.log("Azure Response Data:", data);
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = JSON.stringify(data, null, 2);
+                    display_output(data);  // Appelle la fonction display_output
+                })
+                .catch(error => {
+                    // Gestion de toutes les erreurs (réseau, JSON invalide, etc.)
+                    console.error('Error in analyzing the image:', error);
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerText = `Error: ${error.message}`;
+                });
+            };
+
+            // Lire le fichier en tant qu'ArrayBuffer (données binaires)
+            reader.readAsArrayBuffer(file);
         }
 
         // Fonction pour afficher les résultats des objets détectés
