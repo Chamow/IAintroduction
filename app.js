@@ -21,46 +21,18 @@
 
     <!-- Div pour afficher les résultats détaillés des objets détectés -->
     <div id="output"></div>
+    
+    <!-- Checkbox pour choisir la manière d'afficher les résultats -->
+    <label>
+        <input type="checkbox" id="checkDisplay"> Afficher les détails en JSON
+    </label>
 
     <!-- Inclusion du script -->
     <script>
         const subscriptionKey = 'cb926c4bca8b428fa9f0b817c594834a'; // Remplacez par votre clé d'abonnement Azure
         const endpoint = 'https://newprojetok.cognitiveservices.azure.com/'; // Remplacez par votre URL d'endpoint Azure
         const analyzeUrl = `${endpoint}/vision/v3.2/detect`;
-
-        // Fonction pour afficher les résultats des objets détectés
-        function display_output(data) {
-            const outputDiv = document.getElementById('output');
-            
-            // Efface le contenu existant dans la div output
-            outputDiv.innerHTML = '';
-
-            if (data.objects && data.objects.length > 0) {
-                // Si des objets sont détectés, les afficher
-                data.objects.forEach((obj, index) => {
-                    const objectDiv = document.createElement('div');
-                    objectDiv.className = 'object-detected';
-                    
-                    const title = document.createElement('h3');
-                    title.textContent = `Object ${index + 1}: ${obj.object}`;
-                    objectDiv.appendChild(title);
-
-                    const confidence = document.createElement('p');
-                    confidence.textContent = `Confidence: ${(obj.confidence * 100).toFixed(2)}%`;
-                    objectDiv.appendChild(confidence);
-
-                    const boundingBox = document.createElement('p');
-                    boundingBox.textContent = `Bounding Box: Left=${obj.rectangle.x}, Top=${obj.rectangle.y}, Width=${obj.rectangle.w}, Height=${obj.rectangle.h}`;
-                    objectDiv.appendChild(boundingBox);
-
-                    // Ajoute les détails de l'objet dans la div output
-                    outputDiv.appendChild(objectDiv);
-                });
-            } else {
-                // Si aucun objet n'est détecté, afficher un message
-                outputDiv.innerHTML = '<p>No objects detected in the image.</p>';
-            }
-        }
+        let output; // Variable pour stocker la réponse de l'API
 
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -90,7 +62,7 @@
                     method: 'POST',
                     headers: {
                         'Ocp-Apim-Subscription-Key': subscriptionKey,
-                        'Content-Type': 'application/octet-stream' // Binaire, pas base64
+                        'Content-Type': 'application/octet-stream' // Binaire
                     },
                     body: arrayBuffer // Envoie les données binaires
                 })
@@ -98,9 +70,8 @@
                 .then(data => {
                     // Affiche les résultats si la conversion JSON est réussie
                     console.log("Azure Response Data:", data);
-                    const resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = JSON.stringify(data, null, 2);
-                    display_output(data);  // Appelle la fonction display_output
+                    output = data; // Stocke la réponse pour l'utiliser dans display_output
+                    display_output(); // Appelle la fonction display_output
                 })
                 .catch(error => {
                     // Gestion de toutes les erreurs (réseau, JSON invalide, etc.)
@@ -112,6 +83,43 @@
 
             // Lire le fichier en tant qu'ArrayBuffer (données binaires)
             reader.readAsArrayBuffer(file);
+        }
+
+        // Fonction pour afficher les résultats
+        function display_output() {
+            const outputDisplay = document.getElementById('output');
+            const checkDisplay = document.getElementById('checkDisplay');
+
+            // Efface le contenu existant dans la div output
+            outputDisplay.textContent = '';
+
+            // Vérifie si le résultat est disponible
+            if (output) {
+                if (output.objects) {
+                    if (output.objects.length > 0) {
+                        // Affiche les objets détectés
+                        output.objects.forEach((obj, index) => {
+                            const objectText = `Object ${index + 1}: ${obj.object} (Confidence: ${(obj.confidence * 100).toFixed(2)}%)\n`;
+                            outputDisplay.textContent += objectText + '\n'; // Ajoute une nouvelle ligne
+                        });
+                    } else {
+                        outputDisplay.textContent = "No object detected.";
+                    }
+                } else if (output.error) {
+                    display_error(output.error.message);
+                }
+            }
+
+            // Affiche les détails en JSON si la case est cochée
+            if (checkDisplay.checked) {
+                outputDisplay.textContent = JSON.stringify(output, null, 2);
+            }
+        }
+
+        // Fonction pour afficher les erreurs
+        function display_error(message) {
+            const outputDisplay = document.getElementById('output');
+            outputDisplay.textContent = `Error: ${message}`;
         }
     </script>
 
