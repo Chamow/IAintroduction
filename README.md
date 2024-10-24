@@ -103,12 +103,7 @@ Next, connect the Azure AI service resource you provisioned above to Vision Stud
 
 Here’s a brief overview of the project structure:
 
-IAINTRODUCTION/ 
-        │
-        ├── index.html # Main HTML file     
-        ├── app.js # JavaScript file for handling logic 
-        └── styles.css # CSS file for styling the application
-
+![image](https://github.com/user-attachments/assets/407f9f22-cb76-48fe-b4fa-63027b5f12dd)
 
 ### JavaScript Logic
 
