@@ -1,34 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyse d'image Azure</title>
-</head>
-<body>
 
-    <h1>Analyse d'image Azure</h1>
-    
-    <!-- Input pour choisir une image -->
-    <input type="file" id="imageInput" accept="image/*">
-    
-    <!-- Prévisualisation de l'image -->
-    <img id="imagePreview" style="display:none; max-width:300px; margin-top:10px;" alt="Prévisualisation de l'image">
-    
-    <!-- Résultats de l'analyse -->
-    <h2>Résultats de l'analyse :</h2>
-    <div id="result"></div>
-
-    <!-- Div pour afficher les résultats détaillés des objets détectés -->
-    <div id="output"></div>
-    
-    <!-- Checkbox pour choisir la manière d'afficher les résultats -->
-    <label>
-        <input type="checkbox" id="checkDisplay"> Afficher les détails en JSON
-    </label>
-
-    <!-- Inclusion du script -->
-    <script>
         const subscriptionKey = 'cb926c4bca8b428fa9f0b817c594834a'; // Remplacez par votre clé d'abonnement Azure
         const endpoint = 'https://newprojetok.cognitiveservices.azure.com/'; // Remplacez par votre URL d'endpoint Azure
         const analyzeUrl = `${endpoint}/vision/v3.2/detect`;
