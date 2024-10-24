@@ -16,9 +16,23 @@ document.getElementById('uploadBtn').addEventListener('click', function() {
         return;
     }
 
+    // Afficher l'image dans la prévisualisation
+    previewImage(file);
+
     const analyzeUrl = `${endpoint}/vision/v3.2/detect`;
     analyzeImage(file, analyzeUrl, subscriptionKey); // Appelle la fonction d'analyse avec les nouvelles valeurs
 });
+
+// Fonction pour afficher l'image chargée
+function previewImage(file) {
+    const imagePreview = document.getElementById('imagePreview');
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        imagePreview.src = event.target.result; // Met à jour l'URL de l'image
+        imagePreview.style.display = 'block';   // Affiche l'image
+    };
+    reader.readAsDataURL(file);  // Lire l'image en tant que Data URL
+}
 
 // Fonction pour analyser l'image en envoyant le fichier directement à l'API Azure
 function analyzeImage(file, analyzeUrl, subscriptionKey) {
