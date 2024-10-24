@@ -1,26 +1,33 @@
-const subscriptionKey = 'cb926c4bca8b428fa9f0b817c594834a'; // Remplacez par votre clé d'abonnement Azure
-const endpoint = 'https://newprojetok.cognitiveservices.azure.com/vision/v3.2/detect'; // Remplacez par votre URL d'endpoint Azure
-let output; // Variable pour stocker la réponse de l'API
+// Fonction appelée lorsque le bouton "Upload and Identify" est cliqué
+document.getElementById('uploadBtn').addEventListener('click', function() {
+    const subscriptionKey = document.getElementById('subscriptionKey').value; // Récupère la clé d'abonnement
+    const endpoint = document.getElementById('endpoint').value;               // Récupère l'URL de l'endpoint
 
-document.getElementById('imageInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const imageUrl = URL.createObjectURL(file);
-        const imagePreview = document.getElementById('imagePreview');
-        imagePreview.src = imageUrl;
-        imagePreview.style.display = 'block';  // Affiche l'image
-        analyzeImage(file);  // Appelle la fonction pour analyser l'image
+    if (!subscriptionKey || !endpoint) {
+        alert("Please provide both the subscription key and the endpoint.");
+        return;
     }
+
+    const imageInput = document.getElementById('imageInput');
+    const file = imageInput.files[0];
+    
+    if (!file) {
+        alert("Please select an image first.");
+        return;
+    }
+
+    const analyzeUrl = `${endpoint}/vision/v3.2/detect`;
+    analyzeImage(file, analyzeUrl, subscriptionKey); // Appelle la fonction d'analyse avec les nouvelles valeurs
 });
 
-// Fonction pour analyser l'image en envoyant le fichier directement
-function analyzeImage(file) {
+// Fonction pour analyser l'image en envoyant le fichier directement à l'API Azure
+function analyzeImage(file, analyzeUrl, subscriptionKey) {
     const reader = new FileReader();
     reader.onloadend = function() {
         const arrayBuffer = reader.result;
 
         // Envoie les données binaires à l'API Azure
-        fetch(endpoint, {
+        fetch(analyzeUrl, {
             method: 'POST',
             headers: {
                 'Ocp-Apim-Subscription-Key': subscriptionKey,
@@ -31,8 +38,7 @@ function analyzeImage(file) {
         .then(response => response.json())
         .then(data => {
             console.log("Azure Response Data:", data);
-            output = data; // Stocke la réponse pour l'utiliser dans display_output
-            display_output(); // Affiche les résultats
+            display_output(data); // Affiche les résultats
         })
         .catch(error => {
             console.error('Error in analyzing the image:', error);
@@ -43,31 +49,22 @@ function analyzeImage(file) {
 }
 
 // Fonction pour afficher les résultats
-function display_output() {
-    const outputDisplay = document.getElementById('output');
-    const checkDisplay = document.getElementById('checkDisplay');
-    
-    outputDisplay.textContent = '';  // Réinitialise le contenu de l'affichage
+function display_output(data) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = ''; // Réinitialise le contenu
 
-    if (output) {
-        if (output.objects && output.objects.length > 0) {
-            output.objects.forEach((obj, index) => {
-                const objectText = `Object ${index + 1}: ${obj.object} (Confidence: ${(obj.confidence * 100).toFixed(2)}%)\n`;
-                outputDisplay.textContent += objectText;
-            });
-        } else {
-            outputDisplay.textContent = "No object detected.";
-        }
-    }
-
-    // Si l'option d'affichage JSON est cochée
-    if (checkDisplay.checked) {
-        outputDisplay.textContent = JSON.stringify(output, null, 2);
+    if (data.objects && data.objects.length > 0) {
+        data.objects.forEach((obj, index) => {
+            const objectText = `Object ${index + 1}: ${obj.object} (Confidence: ${(obj.confidence * 100).toFixed(2)}%)\n`;
+            resultDiv.textContent += objectText;
+        });
+    } else {
+        resultDiv.textContent = "No objects detected.";
     }
 }
 
 // Fonction pour afficher les erreurs
 function display_error(message) {
-    const outputDisplay = document.getElementById('output');
-    outputDisplay.textContent = `Error: ${message}`;
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = `Error: ${message}`;
 }
